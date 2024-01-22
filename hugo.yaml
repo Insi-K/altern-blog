@@ -1,0 +1,29 @@
+baseURL: https://example.org/
+languageCode: en-us
+title: Altern Dev
+theme: "PaperMod"
+params:
+    ShowBreadCrumbs: true
+    ShowPostNavLinks: true
+
+    homeInfoParams:
+        Title: Altern Development Blog
+    
+    socialIcons:
+        - name: x
+          url: "https://twitter.com/Ryori_JP" #Use space, not "TABS"
+
+menu:
+    main:
+        - identifier: archives
+          name: Archives
+          url: /archives/
+          weight: 10
+        - identifier: tags
+          name: Tags
+          url: /tags/
+          weight: 20
+        - identifier: categories
+          name: Categories
+          url: /categories/
+          weight: 30
