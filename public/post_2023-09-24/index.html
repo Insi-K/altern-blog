@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>2D Game Graphics Setup (Postprocess Method) | Altern Dev</title>
+<meta name="keywords" content="">
+<meta name="description" content="Setting up Unreal Engine to work with 2D is not a straightforward task. As a game engine focused towards 3D games, many of the default settings can change the overall look of 2D assets. This is a major obstacle for pixel-style games, where things such as pixel-perfect rendering are crucial to make these games look better.
+This tutorial uses Unreal Engine 5 for the 2D game setup. You may use this tutorial for any Unreal Engine 4 projects, however some parameters may be different on the older version of the engine.">
+<meta name="author" content="Guide">
+<link rel="canonical" href="https://example.org/post_2023-09-24/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4599eadb9eb2ad3d0a8d6827b41a8fda8f2f4af226b63466c09c5fddbc8706b7.css" integrity="sha256-RZnq256yrT0KjWgntBqP2o8vSvImtjRmwJxf3byHBrc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://example.org/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://example.org/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://example.org/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://example.org/apple-touch-icon.png">
+<link rel="mask-icon" href="https://example.org/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="2D Game Graphics Setup (Postprocess Method)" />
+<meta property="og:description" content="Setting up Unreal Engine to work with 2D is not a straightforward task. As a game engine focused towards 3D games, many of the default settings can change the overall look of 2D assets. This is a major obstacle for pixel-style games, where things such as pixel-perfect rendering are crucial to make these games look better.
+This tutorial uses Unreal Engine 5 for the 2D game setup. You may use this tutorial for any Unreal Engine 4 projects, however some parameters may be different on the older version of the engine." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.org/post_2023-09-24/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-09-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-09-24T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="2D Game Graphics Setup (Postprocess Method)"/>
+<meta name="twitter:description" content="Setting up Unreal Engine to work with 2D is not a straightforward task. As a game engine focused towards 3D games, many of the default settings can change the overall look of 2D assets. This is a major obstacle for pixel-style games, where things such as pixel-perfect rendering are crucial to make these games look better.
+This tutorial uses Unreal Engine 5 for the 2D game setup. You may use this tutorial for any Unreal Engine 4 projects, however some parameters may be different on the older version of the engine."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://example.org/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "2D Game Graphics Setup (Postprocess Method)",
+      "item": "https://example.org/post_2023-09-24/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "2D Game Graphics Setup (Postprocess Method)",
+  "name": "2D Game Graphics Setup (Postprocess Method)",
+  "description": "Setting up Unreal Engine to work with 2D is not a straightforward task. As a game engine focused towards 3D games, many of the default settings can change the overall look of 2D assets. This is a major obstacle for pixel-style games, where things such as pixel-perfect rendering are crucial to make these games look better.\nThis tutorial uses Unreal Engine 5 for the 2D game setup. You may use this tutorial for any Unreal Engine 4 projects, however some parameters may be different on the older version of the engine.",
+  "keywords": [
+    
+  ],
+  "articleBody": "Setting up Unreal Engine to work with 2D is not a straightforward task. As a game engine focused towards 3D games, many of the default settings can change the overall look of 2D assets. This is a major obstacle for pixel-style games, where things such as pixel-perfect rendering are crucial to make these games look better.\nThis tutorial uses Unreal Engine 5 for the 2D game setup. You may use this tutorial for any Unreal Engine 4 projects, however some parameters may be different on the older version of the engine.\n1. Modifying the Engine Settings for Pixel-Perfect Rendering The following settings are based on Polyart Studio’s tutorials for the Pixel2D plugin.\nCreate a new project in Unreal (I suggest to create a blank project since we won’t be dealing with any 3D elements). Once inside the project, go to Edit \u003e Project Preferences. Go to Engine \u003e Rendering \u003e Default Settings or look for “Default Settings” in the search bar. All the options with checkboxes must be disabled. Make sure “Auto Esposure Bias” is set to 1.0, set “Antialiasing Method” to “None” and “MSAA Sample Count” to “No MSAA”. These settings ensure that most of the postprocessing effects are disabled which causes distortions in texture color and sharpness. I’ve seen in other forums that some people have Anti-Aliasing enabled (either MSAA or TSR I believe), but from my experience, having this option disabled works best with pixel-style games.\nThe next settings may be optional. I haven’t tested how much they affect the ending result but it doesn’t hurt to have these. Go to “Scalability Settings” either through the viewport or the “Settings” button at the top-right corner:\nSet “resolution scale” to 100%. All other settings are set to “low” except for Textures, which I usually set to “Epic”. You may notice during play testing, the sprites will have a slight blur effect despite having the anti-aliasing disabled. This has been noted to be an engine bug that only happens in the viewport when displaying big window sizes (i.e the viewport takes almost all height or in full screen mode using F11). If you play the game as “standalone game” this blur effect will no longer be present.\nSource: https://polyart.gitbook.io/pixel-2d/guides/top-down-engine/top-down-engine-getting-started\n2. Removing the Tone Curve (Camera Setup) By researching forums and playing around with the camera settings, I’ve found a way to get rid of the colour tint that gets applied to textures during gameplay (this only occurs for objects placed in the world. UI Widgets for example will display exactly as the source assets). This is a postprocessing workaround that can be set in the camera options:\nMake sure you have selected your camera object (either placed in the world or the component inside a character blueprint). Go to Post Process \u003e Color Grading \u003e Misc. Enable “Expand Gamut” and “Tone Curve Amount” and set them to “0.0”. You can set the other options in the “Misc.” section to “0.0”, however there is no noticeable effect on the final render. Once you’ve done this, if you still notice a colour difference between “lit” and “unlit” modes (you can change between them with F2 and F3 during play testing), that is because we still need to take care of one more thing: the “Tone Mapper”\nNOTE: When setting this postprocess effect in the camera, make sure the setting “Post Process Blend Weight” is set to maximum in the “Camera Options” (select your target camera actor to find this setting). Otherwise, there wont be any changes on the final render or the camera will render everything black.\n3. Removing the Tonemapper Since 2D games usually do not rely on illumination, sprites should be rendered as previewed in the unlit mode of the viewport (since that is how the source sprites look). However, by default, the engine will render objects with a slight colour tint, making sprites look a bit desaturated. If you play around with the viewport “show” settings you will realize this is caused by postprocessing, more specifically the “Tonemapper” and “Tone Curve” settings. In step 2 we set up the camera to remove the “Tone Curve” and now we proceed to disable the “Tonemapper”. To do this we modify the default engine options through the “DefaultEngine.ini” file inside our project.\nFind the “DefaultEngione.ini” file by searching your “source project folder” \u003e Config \u003e DefaultEngione.ini. Open the file using notepad.\nThe engine options are grouped in sections separated by blank lines. Go to the section that starts with [/Script/Engine.RendererSettings] and paste the following text:\nr.TonemapperGamma = 0 r.TonemapperFilm = 0 r.Tonemapper.Quality = 0 r.ToneCurveAmount = 0 r.Mobile.TonemapperFilm = 0 r.MobileTonemapperUpscale = 0 r.EyeAdaptationQuality = 0 r.EyeAdaptation.ExponentialTransitionDistance = 0\nSave the file and open again Unreal Engine. Now the colour tint will be gone.\nSource: https://georgy.dev/posts/disable-tonemapper/\nNotes When working with 2D projects, I usually create empty levels. Since these type of levels have no light sources, any camera actors that you add will render completely dark. A workaround to this is either work in “unlit” mode or add a directional light. ",
+  "wordCount" : "840",
+  "inLanguage": "en",
+  "datePublished": "2023-09-24T00:00:00Z",
+  "dateModified": "2023-09-24T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Guide"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://example.org/post_2023-09-24/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Altern Dev",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://example.org/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://example.org/" accesskey="h" title="Altern Dev (Alt + H)">Altern Dev</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://example.org/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://example.org/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://example.org/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://example.org/">Home</a>&nbsp;»&nbsp;<a href="https://example.org/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      2D Game Graphics Setup (Postprocess Method)
+    </h1>
+    <div class="post-meta"><span title='2023-09-24 00:00:00 +0000 UTC'>September 24, 2023</span>&nbsp;·&nbsp;Guide
+
+</div>
+  </header> 
+  <div class="post-content"><p>Setting up Unreal Engine to work with 2D is not a straightforward task. As a game engine focused towards 3D games, many of the default settings can change the overall look of 2D assets. This is a major obstacle for pixel-style games, where things such as pixel-perfect rendering are crucial to make these games look better.</p>
+<p>This tutorial uses Unreal Engine 5 for the 2D game setup. You may use this tutorial for any Unreal Engine 4 projects, however some parameters may be different on the older version of the engine.</p>
+<h3 id="1-modifying-the-engine-settings-for-pixel-perfect-rendering">1. Modifying the Engine Settings for Pixel-Perfect Rendering<a hidden class="anchor" aria-hidden="true" href="#1-modifying-the-engine-settings-for-pixel-perfect-rendering">#</a></h3>
+<p>The following settings are based on Polyart Studio&rsquo;s tutorials for the Pixel2D plugin.</p>
+<ul>
+<li>Create a new project in Unreal (I suggest to create a blank project since we won&rsquo;t be dealing with any 3D elements).</li>
+<li>Once inside the project, go to Edit &gt; Project Preferences.</li>
+<li>Go to Engine &gt; Rendering &gt; Default Settings or look for &ldquo;Default Settings&rdquo; in the search bar.</li>
+<li>All the options with checkboxes must be disabled. Make sure &ldquo;Auto Esposure Bias&rdquo; is set to 1.0, set &ldquo;Antialiasing Method&rdquo; to &ldquo;None&rdquo; and &ldquo;MSAA Sample Count&rdquo; to &ldquo;No MSAA&rdquo;.</li>
+</ul>
+<p><img loading="lazy" src="/guide_1/img_1.png" alt="Img1"  />
+</p>
+<p>These settings ensure that most of the postprocessing effects are disabled which causes distortions in texture color and sharpness. I&rsquo;ve seen in other forums that some people have Anti-Aliasing enabled (either MSAA or TSR I believe), but from my experience, having this option disabled works best with pixel-style games.</p>
+<p>The next settings may be optional. I haven&rsquo;t tested how much they affect the ending result but it doesn&rsquo;t hurt to have these. Go to &ldquo;Scalability Settings&rdquo; either through the viewport or the &ldquo;Settings&rdquo; button at the top-right corner:</p>
+<ul>
+<li>Set &ldquo;resolution scale&rdquo; to 100%.</li>
+<li>All other settings are set to &ldquo;low&rdquo; except for Textures, which I usually set to &ldquo;Epic&rdquo;.</li>
+</ul>
+<p><img loading="lazy" src="/guide_1/img_2.png" alt="Img2"  />
+</p>
+<p>You may notice during play testing, the sprites will have a slight blur effect despite having the anti-aliasing disabled. This has been noted to be an engine bug that only happens in the viewport when displaying big window sizes (i.e the viewport takes almost all height or in full screen mode using F11). If you play the game as &ldquo;standalone game&rdquo; this blur effect will no longer be present.</p>
+<p>Source: <a href="https://polyart.gitbook.io/pixel-2d/guides/top-down-engine/top-down-engine-getting-started">https://polyart.gitbook.io/pixel-2d/guides/top-down-engine/top-down-engine-getting-started</a></p>
+<h3 id="2-removing-the-tone-curve-camera-setup">2. Removing the Tone Curve (Camera Setup)<a hidden class="anchor" aria-hidden="true" href="#2-removing-the-tone-curve-camera-setup">#</a></h3>
+<p>By researching forums and playing around with the camera settings, I&rsquo;ve found a way to get rid of the colour tint that gets applied to textures during gameplay (this only occurs for objects placed in the world. UI Widgets for example will display exactly as the source assets). This is a postprocessing workaround that can be set in the camera options:</p>
+<ul>
+<li>Make sure you have selected your camera object (either placed in the world or the component inside a character blueprint).</li>
+<li>Go to Post Process &gt; Color Grading &gt; Misc.</li>
+<li>Enable &ldquo;Expand Gamut&rdquo; and &ldquo;Tone Curve Amount&rdquo; and set them to &ldquo;0.0&rdquo;. You can set the other options in the &ldquo;Misc.&rdquo; section to &ldquo;0.0&rdquo;, however there is no noticeable effect on the final render.</li>
+</ul>
+<p><img loading="lazy" src="/guide_1/img_3.png" alt="Img3"  />
+</p>
+<p>Once you&rsquo;ve done this, if you still notice a colour difference between &ldquo;lit&rdquo; and &ldquo;unlit&rdquo; modes (you can change between them with F2 and F3 during play testing), that is because we still need to take care of one more thing: the &ldquo;Tone Mapper&rdquo;</p>
+<p>NOTE: When setting this postprocess effect in the camera, make sure the setting &ldquo;Post Process Blend Weight&rdquo; is set to maximum in the &ldquo;Camera Options&rdquo; (select your target camera actor to find this setting). Otherwise, there wont be any changes on the final render or the camera will render everything black.</p>
+<h3 id="3-removing-the-tonemapper">3. Removing the Tonemapper<a hidden class="anchor" aria-hidden="true" href="#3-removing-the-tonemapper">#</a></h3>
+<p>Since 2D games usually do not rely on illumination, sprites should be rendered as previewed in the unlit mode of the viewport (since that is how the source sprites look). However, by default, the engine will render objects with a slight colour tint, making sprites look a bit desaturated. If you play around with the viewport &ldquo;show&rdquo; settings you will realize this is caused by postprocessing, more specifically the &ldquo;Tonemapper&rdquo; and &ldquo;Tone Curve&rdquo; settings. In step 2 we set up the camera to remove the &ldquo;Tone Curve&rdquo; and now we proceed to disable the &ldquo;Tonemapper&rdquo;. To do this we modify the default engine options through the &ldquo;DefaultEngine.ini&rdquo; file inside our project.</p>
+<ul>
+<li>
+<p>Find the &ldquo;DefaultEngione.ini&rdquo; file by searching your &ldquo;source project folder&rdquo; &gt; Config &gt; DefaultEngione.ini. Open the file using notepad.</p>
+</li>
+<li>
+<p>The engine options are grouped in sections separated by blank lines. Go to the section that starts with [/Script/Engine.RendererSettings] and paste the following text:</p>
+<blockquote>
+<p>r.TonemapperGamma = 0
+r.TonemapperFilm = 0
+r.Tonemapper.Quality = 0
+r.ToneCurveAmount = 0
+r.Mobile.TonemapperFilm = 0
+r.MobileTonemapperUpscale = 0
+r.EyeAdaptationQuality = 0
+r.EyeAdaptation.ExponentialTransitionDistance = 0</p>
+</blockquote>
+</li>
+<li>
+<p>Save the file and open again Unreal Engine. Now the colour tint will be gone.</p>
+</li>
+</ul>
+<p>Source: <a href="https://georgy.dev/posts/disable-tonemapper/">https://georgy.dev/posts/disable-tonemapper/</a></p>
+<h3 id="notes">Notes<a hidden class="anchor" aria-hidden="true" href="#notes">#</a></h3>
+<ul>
+<li>When working with 2D projects, I usually create empty levels. Since these type of levels have no light sources, any camera actors that you add will render completely dark. A workaround to this is either work in &ldquo;unlit&rdquo; mode or add a directional light.</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://example.org/">Altern Dev</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

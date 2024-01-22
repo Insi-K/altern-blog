@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Altern Dev</title>
+    <link>https://example.org/</link>
+    <description>Recent content on Altern Dev</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 24 Sep 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2D Game Graphics Setup (Postprocess Method)</title>
+      <link>https://example.org/post_2023-09-24/</link>
+      <pubDate>Sun, 24 Sep 2023 00:00:00 +0000</pubDate>
+      <guid>https://example.org/post_2023-09-24/</guid>
+      <description>Setting up Unreal Engine to work with 2D is not a straightforward task. As a game engine focused towards 3D games, many of the default settings can change the overall look of 2D assets. This is a major obstacle for pixel-style games, where things such as pixel-perfect rendering are crucial to make these games look better.
+This tutorial uses Unreal Engine 5 for the 2D game setup. You may use this tutorial for any Unreal Engine 4 projects, however some parameters may be different on the older version of the engine.</description>
+    </item>
+  </channel>
+</rss>
