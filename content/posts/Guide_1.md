@@ -2,8 +2,9 @@
 title: '2D Game Graphics Setup (Postprocess Method)'
 date: 2023-09-24
 # weight: 1 #Use this tag to Pin posts
-author: "Guide" #Using author as category label instead
+author: "Guide" #Using author as category label instead (Main tag)
 url: "/post_2023-09-24/"
+tags: ['Guide', '2D Development']
 #Images are added to posts via the static folder. Then use the following markdown syntax: ![ImageMetadata](/any-subfolder-inside-static/source-img.png)
 ---
 Setting up Unreal Engine to work with 2D is not a straightforward task. As a game engine focused towards 3D games, many of the default settings can change the overall look of 2D assets. This is a major obstacle for pixel-style games, where things such as pixel-perfect rendering are crucial to make these games look better.

@@ -23,7 +23,3 @@ menu:
           name: Tags
           url: /tags/
           weight: 20
-        - identifier: categories
-          name: Categories
-          url: /categories/
-          weight: 30
